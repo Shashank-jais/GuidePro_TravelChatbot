@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <div className='text-white flex m-3 p-2 '>
       <div className='w-[90%] md:w-[40%] flex justify-center items-center'>
-        <h1 className='text-5xl font-extrabold bg-gradient-to-r from-[#417ece] via-[#58e5f9] via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>
+        <h1 className='text-5xl font-extrabold bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>
           GuidePro
         </h1>
       </div>
@@ -19,9 +19,9 @@ const Header = () => {
 
       <div className='hidden md:w-[60%] md:flex md:justify-center md:items-center'>
         <ul className='flex justify-evenly items-center w-full text-xl font-bold'>
-          <li className='bg-gradient-to-r from-[#417ece] via-[#58e5f9] via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Home</li>
-          <li className='bg-gradient-to-r from-[#417ece] via-[#58e5f9] via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>About</li>
-          <li className='bg-gradient-to-r from-[#417ece] via-[#58e5f9] via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Features</li>
+          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Home</li>
+          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>About</li>
+          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Features</li>
         </ul>
       </div>
 
@@ -35,9 +35,9 @@ const Header = () => {
       >
         <button className='absolute top-4 right-4 text-3xl' onClick={toggleMobileMenu}>✕</button>
         <ul className='flex flex-col justify-around items-start pl-10 font-bold text-2xl h-2/4'>
-          <li className='bg-gradient-to-r from-[#417ece] via-[#58e5f9] via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Home</li>
-          <li className='bg-gradient-to-r from-[#417ece] via-[#58e5f9] via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>About</li>
-          <li className='bg-gradient-to-r from-[#417ece] via-[#58e5f9] via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Features</li>
+          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Home</li>
+          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>About</li>
+          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Features</li>
         </ul>
       </div>
     </div>
