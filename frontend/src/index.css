@@ -9,9 +9,27 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: black;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+.gradient-color {
+  background: linear-gradient(to right, #419cce, #58e5f9, #fbbed6, #ca6fa5);
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+.gradient-text {
+  background: linear-gradient(to right, #419cce, #58e5f9, #fbbed6, #ca6fa5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
