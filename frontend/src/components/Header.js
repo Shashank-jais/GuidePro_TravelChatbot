@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <div className='text-white flex m-3 p-2 '>
       <div className='w-[90%] md:w-[40%] flex justify-center items-center'>
-        <h1 className='text-5xl font-extrabold bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>
+        <h1 className=' text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>
           GuidePro
         </h1>
       </div>

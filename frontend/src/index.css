@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 
 body {
   margin: 0;
@@ -21,15 +22,17 @@ code {
 .gradient-color {
   background: linear-gradient(to right, #419cce, #58e5f9, #fbbed6, #ca6fa5);
   border: none;
-  color: white;
-  padding: 15px 30px;
+  color: black;
+  padding: 10px 30px;
   font-size: 16px;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
   
 }
-.gradient-text {
-  background: linear-gradient(to right, #419cce, #58e5f9, #fbbed6, #ca6fa5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.home-heading {
+  font-family: "Black Ops One", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
+
+
