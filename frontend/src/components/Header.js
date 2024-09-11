@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { IoMenu } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -10,20 +11,30 @@ const Header = () => {
 
   return (
     <div className='text-white flex m-3 p-2 '>
-      <div className='w-[90%] md:w-[40%] flex justify-center items-center'>
-        <h1 className=' text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>
+      <div className='w-[90%] md:w-[40%] flex md:justify-center items-center  ml-[15px] md:ml-0'>
+        <h1 className=' text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text  '>
           GuidePro
         </h1>
       </div>
 
 
-      <div className='hidden md:w-[60%] md:flex md:justify-center md:items-center'>
-        <ul className='flex justify-evenly items-center w-full text-xl font-bold'>
-          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text hover:border-2 hover:border-white '>Home</li>
-          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>About</li>
-          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Features</li>
-        </ul>
+      <div className='hidden md:w-[60%] md:flex md:justify-evenly md:items-center gap-1 ml-2'>
+        {[
+          { name: 'Home', path: '/' },
+          { name: 'About', path: '/about' },
+          { name: 'Features', path: '/feature' }
+        ].map((item) => (
+          <Link
+            key={item.name}
+            to={item.path}
+            className="cursor-pointer bg-gradient-to-r from-[#417ece] via-[#fbbed6] to-[#ca6fa5] text-transparent bg-clip-text border-2 border-transparent hover:border-white rounded-full p-2 transition duration-300 ease-in-out text-lg font-bold"
+            aria-label={item.name}
+          >
+            {item.name}
+          </Link>
+        ))}
       </div>
+
 
       {/* Mobile Menu */}
       <div className='w-[10%] md:hidden flex justify-center items-center text-4xl'>

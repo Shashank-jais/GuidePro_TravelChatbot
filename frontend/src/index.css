@@ -29,6 +29,9 @@ code {
   cursor: pointer;
   
 }
+.bg-gradient{
+  background: linear-gradient(to right, #419cce, #58e5f9, #fbbed6, #ca6fa5);
+}
 .home-heading {
   font-family: "Black Ops One", system-ui;
   font-weight: 400;
