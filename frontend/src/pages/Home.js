@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import updated from '../images/updated.mp4';
+import home_video from '../images/home_video.mp4';
+
 
 const Home = () => {
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
+
+  
   return (
     <div className='flex flex-col md:flex-row justify-around items-center text-white min-h-[86vh] w-full p-4'>
-      <div className='p-6 pt-0 flex flex-col justify-between md:w-[48%]'>
+      <div className={`p-6 pt-0 flex flex-col justify-between h-full md:w-[48%] transition-all duration-1000 ease-out transform 
+        ${loaded ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
         <div className='mb-4'>
           <p className='text-5xl md:text-6xl lg:text-8xl capitalize home-heading'>
-            CHAT<br/>
+            CHAT<br />
             <span className='home-heading text-6xl md:text-8xl lg:text-10xl capitalize bg-gradient-to-r from-[#417ece] via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>
               SMARTER
             </span>
@@ -21,10 +32,13 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <div className='border-2 border-red-800 p-6 md:w-[40%] flex justify-center items-center '>
-        <p className='text-lg md:text-xl'>Image</p>
-        {/* You can place an image here */}
+      <div className=' md:w-[40%] md:h-[40%] flex justify-center items-center rounded-full overflow-hidden'>
+        <video className='w-full h-full object-cover ' autoPlay muted loop>
+          <source src={updated} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
+
     </div>
   );
 };

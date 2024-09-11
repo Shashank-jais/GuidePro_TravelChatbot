@@ -19,7 +19,7 @@ const Header = () => {
 
       <div className='hidden md:w-[60%] md:flex md:justify-center md:items-center'>
         <ul className='flex justify-evenly items-center w-full text-xl font-bold'>
-          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Home</li>
+          <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text hover:border-2 hover:border-white '>Home</li>
           <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>About</li>
           <li className='bg-gradient-to-r from-[#417ece]  via-[#fbbed6] to-[#ca6fa5] inline-block text-transparent bg-clip-text'>Features</li>
         </ul>
