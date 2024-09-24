@@ -8,7 +8,6 @@ const Chat = () => {
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [restaurants, setRestaurants] = useState([]); // State to hold restaurant data
-    const [loading, setLoading] = useState(false); // Loading state
 
     useEffect(() => {
         const dummyMessages = [
@@ -43,7 +42,6 @@ const Chat = () => {
     };
 
     const fetchRestaurants = async (locationId) => {
-        setLoading(true); // Set loading to true
         try {
             const response = await fetch(`http://localhost:8080/api/restaurants?locationId=${locationId}`, {
                 method: 'GET',
@@ -60,15 +58,21 @@ const Chat = () => {
             console.log(response);
             if (data && Array.isArray(data)) {
                 console.log(data);
+                const newMessage = {
+                    id: messages.length + 1,
+                    sender: "John Doe",
+                    content: "",
+                    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+                    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                };
+                setMessages([...messages, newMessage]);
                 setRestaurants(data); // Set fetched restaurant data to state
             } else {
                 console.log("Unexpected data format: ", data);
             }
         } catch (error) {
             console.error('Error fetching restaurants:', error);
-        } finally {
-            setLoading(false); // Set loading to false
-        }
+        } 
     };
 
     return (
@@ -86,11 +90,8 @@ const Chat = () => {
                                         {message.content ? (
                                             message.content
                                         ) : (
-                                            loading ? (
-                                                <span>Loading restaurants...</span> // Loading state message
-                                            ) : (
-                                                <RestaurantList restaurants={restaurants} />
-                                            )
+                                           <RestaurantList restaurants={restaurants} />
+                                            
                                         )}
                                     </p>
                                     <span className={`text-xs ${Darkmode ? 'text-gray-400' : 'text-white'} mt-1 block`}>{message.timestamp}</span>
