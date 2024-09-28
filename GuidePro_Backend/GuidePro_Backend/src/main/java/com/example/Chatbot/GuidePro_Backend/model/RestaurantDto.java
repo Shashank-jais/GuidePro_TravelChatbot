@@ -7,6 +7,9 @@ import java.util.List;
 
 @Data
 public class RestaurantDto {
+
+
+    private String restaurantsId;
     private String name;
     private int averageRating;
     private List<String> establishmentTypeAndCuisineTags;
@@ -18,8 +21,9 @@ public class RestaurantDto {
     public RestaurantDto() {
     }
 
-    public RestaurantDto(String name, int averageRating, List<String> establishmentTypeAndCuisineTags,
+    public RestaurantDto(String restaurantsId, String name, int averageRating, List<String> establishmentTypeAndCuisineTags,
                          String heroImgUrl, int heroImgRawHeight, int heroImgRawWidth) {
+        this.restaurantsId = restaurantsId;
         this.name = name;
         this.averageRating = averageRating;
         this.establishmentTypeAndCuisineTags = establishmentTypeAndCuisineTags;
@@ -27,6 +31,15 @@ public class RestaurantDto {
         this.heroImgRawHeight = heroImgRawHeight;
         this.heroImgRawWidth = heroImgRawWidth;
 
+    }
+
+
+    public String getRestaurantsId() {
+        return restaurantsId;
+    }
+
+    public void setRestaurantsId(String restaurantsId) {
+        this.restaurantsId = restaurantsId;
     }
 
     public String getName() {

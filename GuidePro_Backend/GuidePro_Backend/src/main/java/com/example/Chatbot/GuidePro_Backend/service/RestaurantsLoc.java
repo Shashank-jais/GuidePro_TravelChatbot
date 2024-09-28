@@ -1,6 +1,8 @@
 package com.example.Chatbot.GuidePro_Backend.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.example.Chatbot.GuidePro_Backend.model.Restaurant;
+import com.example.Chatbot.GuidePro_Backend.model.RestaurantDetailsDTO;
 import com.example.Chatbot.GuidePro_Backend.model.RestaurantDto;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +34,7 @@ public class RestaurantsLoc {
                         .path("/api/v1/restaurant/searchRestaurants")
                         .queryParam("locationId", locationId)
                         .build())
-                .header("x-rapidapi-key", "19b49f9247msh138b0a23f7930cdp1a971cjsn80cba4cdb6c3")
+                .header("x-rapidapi-key", "dfe5b19525mshb8c0ef89ba8db16p106983jsn8a1120f64ec8")
                 .header("x-rapidapi-host", "tripadvisor16.p.rapidapi.com")
                 .retrieve()
                 .bodyToMono(String.class);
@@ -74,6 +76,9 @@ public class RestaurantsLoc {
         for (JsonNode restaurantNode : dataNode) {
             RestaurantDto restaurant = new RestaurantDto();
 
+            if(restaurantNode.has("restaurantsId")){
+                restaurant.setRestaurantsId(restaurantNode.get("restaurantsId").asText());
+            }
             // Extract fields safely, adding checks
             if (restaurantNode.has("name")) {
                 restaurant.setName(restaurantNode.get("name").asText());
@@ -105,4 +110,7 @@ public class RestaurantsLoc {
         restaurantResponseDto.setRestaurants(restaurants);
         return restaurantResponseDto;
     }
+
+
+
 }

@@ -10,7 +10,7 @@ const RestaurantList = ({ restaurants }) => {
             <div className='flex flex-col h-[200px] overflow-y-auto'>
                 {restaurants.length > 0 ? (
                     restaurants.map((restaurant) => (
-                        <div key={restaurant.id} className='flex flex-row justify-around p-2 gap-5 items-center mb-4'>
+                        <div key={restaurant.restaurantsId} className='flex flex-row justify-around p-2 gap-5 items-center mb-4 cursor-pointer'>
                             <div className='w-[20%]'>
                                 <img 
                                     src={restaurant.heroImgUrl || fallbackImageUrl}
