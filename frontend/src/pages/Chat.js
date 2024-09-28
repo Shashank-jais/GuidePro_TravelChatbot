@@ -11,9 +11,9 @@ const Chat = () => {
 
     useEffect(() => {
         const dummyMessages = [
-            { id: 1, sender: 'John Doe', content: 'Hello there!', timestamp: '10:30 AM', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
-            { id: 2, sender: 'You', content: 'Hi John! How are you?', timestamp: '10:31 AM', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
-            { id: 3, sender: 'John Doe', content: 'I\'m doing great, thanks for asking!', timestamp: '10:32 AM', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
+            { id: 1, intent: "normal", sender: 'John Doe', content: 'Hello there!', timestamp: '10:30 AM', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
+            { id: 2, intent: "normal", sender: 'You', content: 'Hi John! How are you?', timestamp: '10:31 AM', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
+            { id: 3, intent: "normal", sender: 'John Doe', content: 'I\'m doing great, thanks for asking!', timestamp: '10:32 AM', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
         ];
         setMessages(dummyMessages);
     }, []);
@@ -25,25 +25,37 @@ const Chat = () => {
     const handleMessage = () => {
         if (inputMessage.trim() !== '') {
             const newMessage = {
-                id: messages.length + 1,
+                id: messages.length + 1, // Ensuring unique ID
+                intent: "normal",
                 sender: "You",
                 content: inputMessage,
                 avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             };
-            setMessages([...messages, newMessage]);
+
+            // Functional update to append the new message to the existing ones
+            setMessages(prevMessages => {
+                console.log('Previous messages:', prevMessages); // Log previous messages
+                const updatedMessages = [...prevMessages, newMessage]; // Append the new message
+                console.log('Updated messages:', updatedMessages); // Log updated messages
+                return updatedMessages;
+            });
+
             setInputMessage('');
-            fetchRestaurants(newMessage.content); 
+
+            fetchRestaurants(newMessage.content)
         }
     };
+
+
 
     const handleInputChange = (e) => {
         setInputMessage(e.target.value);
     };
 
-    const fetchRestaurants = async (locationId) => {
+    const fetchRestaurants = async (message) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/restaurants?locationId=${locationId}`, {
+            const response = await fetch(`http://localhost:8080/api/response?message=${message}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,26 +66,94 @@ const Chat = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const data = await response.json();
-            console.log(response);
-            if (data && Array.isArray(data)) {
-                console.log(data);
+            const data = await response.json(); // Parsing the JSON response
+            console.log(data); // Debug log for the fetched data
+
+            // Check if the response contains 'intent'
+            if (data && data.intent) {
                 const newMessage = {
                     id: messages.length + 1,
+                    intent: data.intent,
                     sender: "John Doe",
                     content: "",
-                    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+                    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
                     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 };
-                setMessages([...messages, newMessage]);
-                setRestaurants(data); // Set fetched restaurant data to state
+
+                // Handle based on intent type
+                switch (data.intent) {
+                    case "Restaurantlist":
+                        // Update the restaurants only if intent is "Restauranlist"
+                        if (Array.isArray(data.restaurants)) {
+                            newMessage.intent = data.intent;
+                            newMessage.content = `Found ${data.restaurants.length} restaurants.`;
+                            setMessages(prevMessages => [...prevMessages, newMessage]); // Update messages state
+                            setRestaurants(data.restaurants); // Update restaurant data
+
+
+
+                            // console.log("NewMessage:", newMessage);
+                            // console.log("Restaurants:", restaurants);
+                            // console.log("message:", messages);
+
+
+
+                        } else {
+                            newMessage.content = "No restaurants found.";
+                            setMessages(prevMessages => [...prevMessages, newMessage]);
+                        }
+                        break;
+
+
+                    case "normal":
+                        newMessage.intent = data.intent;
+                        newMessage.content = data.message;
+                        setMessages(prevMessages => [...prevMessages, newMessage]);
+                        break;
+
+
+                    default:
+                        newMessage.content = "Unrecognized intent.";
+                        setMessages(prevMessages => [...prevMessages, newMessage]);
+                        console.log("Unknown intent: ", data.intent);
+                }
             } else {
-                console.log("Unexpected data format: ", data);
+                console.log("No valid intent found in the response.");
             }
         } catch (error) {
             console.error('Error fetching restaurants:', error);
-        } 
+        }
     };
+
+
+    // Function to render content based on intent
+    const renderContentByIntent = (message) => {
+
+        switch (message.intent) {
+            case 'Restaurantlist':
+                return <RestaurantList restaurants={restaurants} />;
+
+
+            default:
+                return message.content;
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     return (
         <>
@@ -87,12 +167,7 @@ const Chat = () => {
                                 <img src={message.avatar} alt="avatar" className='w-8 h-8 rounded-full mr-2' />
                                 <div className={`max-w-xl ${message.sender === 'You' ? 'bg-blue-500 text-white' : Darkmode ? 'bg-gray-700' : 'bg-white'} rounded-lg p-3 shadow`}>
                                     <p>
-                                        {message.content ? (
-                                            message.content
-                                        ) : (
-                                           <RestaurantList restaurants={restaurants} />
-                                            
-                                        )}
+                                        {renderContentByIntent(message)}
                                     </p>
                                     <span className={`text-xs ${Darkmode ? 'text-gray-400' : 'text-white'} mt-1 block`}>{message.timestamp}</span>
                                 </div>
