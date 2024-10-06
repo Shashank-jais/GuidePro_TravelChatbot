@@ -3,6 +3,7 @@ package com.example.Chatbot.GuidePro_Backend.controller;
 import com.example.Chatbot.GuidePro_Backend.model.*;
 import com.example.Chatbot.GuidePro_Backend.service.HotelsLoc;
 import com.example.Chatbot.GuidePro_Backend.service.RestaurantsLoc;
+import com.example.Chatbot.GuidePro_Backend.service.WeatherLoc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,20 +26,18 @@ public class Home {
     @Autowired
     private HomeDTO greet;
 
+    @Autowired
+    private WeatherLoc weatherLoc;
+
     @RequestMapping("/")
     public String hello() {
         return "Namaste Sir";
     }
 
 
-
-
-
-
-
     @GetMapping("/response")
     public ResponseEntity<?> NLP(@RequestParam String message) {
-        String intent = "Home";
+        String intent = "Weather";
         switch (intent) {
             case "Home":
                 greet.setMessage("Good Morning");
@@ -74,7 +73,7 @@ public class Home {
 
             case "Hotellist":
                 // Using the message parameter as geoId
-                String geoId = message ;  // Use the user's message as the geoId dynamically
+                String geoId = message;  // Use the user's message as the geoId dynamically
 
                 try {
                     Hotel hotelData = hotelsLoc.fetchHotelByGeoId(geoId);
@@ -99,6 +98,37 @@ public class Home {
                 }
 
 
+            case "Weather":
+                // Hardcoded location name (city) for this example. Replace "message" with the input query/location
+                String city = message;
+
+                try {
+                    // Fetch weather data using the WeatherLoc service
+                    Weather weather = weatherLoc.fetchWeatherByCity(city);
+                    WeatherDTO weatherData = weather.getWeather();
+
+                    if (weatherData == null) {
+                        // If no weather data is found, return a 204 No Content response
+                        return ResponseEntity.noContent().build();
+                    }
+
+                    // Set the intent if required, for tracking purposes
+                    weather.setIntent(intent); // If you need intent in the weather response
+
+                    // Return the entire WeatherDTO object (with all the weather details)
+                    return ResponseEntity.ok(weather); // 200 OK with weather data
+                } catch (NullPointerException e) {
+                    // Handle NullPointerException and log the error
+                    System.err.println("NullPointerException occurred: " + e.getMessage());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Null Pointer Exception occurred");
+                } catch (Exception e) {
+                    // Handle other exceptions and log the error
+                    System.err.println("An error occurred while fetching weather: " + e.getMessage());
+                    String errorMessage = "Could not fetch weather data for " + city + ". Please check the city name and try again.";
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while fetching weather data");
+//                    return ResponseEntity.ok(errorMessage);
+                }
+
 
             default:
                 // Handle unknown intent
@@ -106,12 +136,6 @@ public class Home {
         }
 
     }
-
-
-
-
-
-
 
 
 //    @GetMapping("/restaurants")
