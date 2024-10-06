@@ -2,18 +2,36 @@ import React, { useEffect, useState } from 'react';
 import ChatbotHeader from '../components/ChatbotHeader';
 import { IoSendOutline } from "react-icons/io5";
 import RestaurantList from '../components/RestaurantList'; // Ensure RestaurantList accepts props
+import HotelList from '../components/HotelList';
 
 const Chat = () => {
-    const [Darkmode, setDark] = useState(false);
+    const [Darkmode, setDark] = useState(true);
     const [inputMessage, setInputMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [restaurants, setRestaurants] = useState([]); // State to hold restaurant data
+    const [hotels, setHotels] = useState([]); 
 
     useEffect(() => {
         const dummyMessages = [
-            { id: 1, intent: "normal", sender: 'John Doe', content: 'Hello there!', timestamp: '10:30 AM', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
-            { id: 2, intent: "normal", sender: 'You', content: 'Hi John! How are you?', timestamp: '10:31 AM', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
-            { id: 3, intent: "normal", sender: 'John Doe', content: 'I\'m doing great, thanks for asking!', timestamp: '10:32 AM', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
+            // { id: 1, intent: "normal", sender: 'John Doe', content: 'Hello there!', timestamp: '10:30 AM', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
+            // { id: 2, intent: "normal", sender: 'You', content: 'Hi John! How are you?', timestamp: '10:31 AM', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
+            // { id: 3, intent: "normal", sender: 'John Doe', content: 'I\'m doing great, thanks for asking!', timestamp: '10:32 AM', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' },
+            { 
+                id: 1, 
+                intent: "normal", 
+                sender: 'You', 
+                content: 'Hi, I’m looking for travel recommendations!', 
+                timestamp: '10:30 AM', 
+                avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' 
+              },
+              { 
+                id: 2, 
+                intent: "normal", 
+                sender: 'John Doe', 
+                content: 'Hello! Where are you planning to travel to?', 
+                timestamp: '10:31 AM', 
+                avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' 
+              },
         ];
         setMessages(dummyMessages);
     }, []);
@@ -104,6 +122,27 @@ const Chat = () => {
                         }
                         break;
 
+                    case "Hotellist":
+                        // Update the hotel only if intent is "hotellist"
+                        if (Array.isArray(data.hotels)) {
+                            newMessage.intent = data.intent;
+                            newMessage.content = `Found ${data.hotels.length} hotels.`;
+                            setMessages(prevMessages => [...prevMessages, newMessage]); // Update messages state
+                            setHotels(data.hotels); // Update hotels data
+
+
+
+                            // console.log("NewMessage:", newMessage);
+                            // console.log("Restaurants:", restaurants);
+                            // console.log("message:", messages);
+
+
+
+                        } else {
+                            newMessage.content = "No Hotel found.";
+                            setMessages(prevMessages => [...prevMessages, newMessage]);
+                        }
+                        break;
 
                     case "normal":
                         newMessage.intent = data.intent;
@@ -131,8 +170,9 @@ const Chat = () => {
 
         switch (message.intent) {
             case 'Restaurantlist':
-                return <RestaurantList restaurants={restaurants} />;
-
+                return <RestaurantList restaurants={restaurants} Darkmode={Darkmode}/>;
+            case 'Hotellist':
+                return <HotelList hotels ={hotels} Darkmode={Darkmode}/>;
 
             default:
                 return message.content;

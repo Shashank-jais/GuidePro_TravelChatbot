@@ -31,10 +31,10 @@ public class HotelsLoc {
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/v1/hotels/searchHotels")
                         .queryParam("geoId", geoId)
-                        .queryParam("checkIn", "2024-10-01")
-                        .queryParam("checkOut", "2024-10-10")
+                        .queryParam("checkIn", "2024-11-07")
+                        .queryParam("checkOut", "2024-11-10")
                         .queryParam("pageNumber", "1")
-                        .queryParam("currencyCode", "USD")
+                        .queryParam("currencyCode", "INR")
                         .build())
                 .header("x-rapidapi-key", "dfe5b19525mshb8c0ef89ba8db16p106983jsn8a1120f64ec8")
                 .header("x-rapidapi-host", "tripadvisor16.p.rapidapi.com")

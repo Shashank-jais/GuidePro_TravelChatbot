@@ -39,3 +39,40 @@ code {
 }
 
 
+/* Hide scrollbar for all elements */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer and Edge */
+}
+
+.book-now-button {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #1a73e8; /* Subtle blue background */
+  border: 2px solid transparent;
+  border-radius: 8px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+}
+
+.book-now-button:hover {
+  background-color: #155ab6; /* Darker shade on hover */
+  transform: translateY(-2px); /* Slight elevation on hover */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+.book-now-button:active {
+  background-color: #0e468b; /* Even darker on click */
+  transform: translateY(0); /* Reset elevation on click */
+}

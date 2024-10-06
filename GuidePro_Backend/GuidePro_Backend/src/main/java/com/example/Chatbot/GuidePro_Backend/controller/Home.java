@@ -38,7 +38,7 @@ public class Home {
 
     @GetMapping("/response")
     public ResponseEntity<?> NLP(@RequestParam String message) {
-        String intent = "Hotellist";
+        String intent = "Home";
         switch (intent) {
             case "Home":
                 greet.setMessage("Good Morning");
@@ -74,7 +74,7 @@ public class Home {
 
             case "Hotellist":
                 // Using the message parameter as geoId
-                String geoId = message;  // Use the user's message as the geoId dynamically
+                String geoId = message ;  // Use the user's message as the geoId dynamically
 
                 try {
                     Hotel hotelData = hotelsLoc.fetchHotelByGeoId(geoId);
