@@ -2,6 +2,7 @@ package com.example.Chatbot.GuidePro_Backend.controller;
 
 import com.example.Chatbot.GuidePro_Backend.model.*;
 import com.example.Chatbot.GuidePro_Backend.service.HotelsLoc;
+import com.example.Chatbot.GuidePro_Backend.service.LocationIDLoc;
 import com.example.Chatbot.GuidePro_Backend.service.RestaurantsLoc;
 import com.example.Chatbot.GuidePro_Backend.service.WeatherLoc;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class Home {
     @Autowired
     private WeatherLoc weatherLoc;
 
+    @Autowired
+    private LocationIDLoc locationIDLoc;
+
     @RequestMapping("/")
     public String hello() {
         return "Namaste Sir";
@@ -37,6 +41,8 @@ public class Home {
 
     @GetMapping("/response")
     public ResponseEntity<?> NLP(@RequestParam String message) {
+
+
         String intent = "Weather";
         switch (intent) {
             case "Home":
@@ -46,7 +52,7 @@ public class Home {
 
             case "Restaurantlist":
                 // Hardcoded locationId for this example
-                String locationId = message;
+                String locationId = locationIDLoc.fetchLocationIDByQuery(message);
 
                 try {
                     Restaurant restaurantData = restaurantsLoc.fetchRestaurantsByLocationId(locationId);
@@ -73,7 +79,7 @@ public class Home {
 
             case "Hotellist":
                 // Using the message parameter as geoId
-                String geoId = message;  // Use the user's message as the geoId dynamically
+                String geoId = locationIDLoc.fetchLocationIDByQuery(message);  // Use the user's message as the geoId dynamically
 
                 try {
                     Hotel hotelData = hotelsLoc.fetchHotelByGeoId(geoId);

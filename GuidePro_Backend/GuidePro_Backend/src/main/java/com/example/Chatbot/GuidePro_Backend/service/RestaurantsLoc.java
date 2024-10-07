@@ -34,7 +34,7 @@ public class RestaurantsLoc {
                         .path("/api/v1/restaurant/searchRestaurants")
                         .queryParam("locationId", locationId)
                         .build())
-                .header("x-rapidapi-key", "dfe5b19525mshb8c0ef89ba8db16p106983jsn8a1120f64ec8")
+                .header("x-rapidapi-key", "08440b8a3cmshf1dc14626335561p1977dejsn2587ce6ade42")
                 .header("x-rapidapi-host", "tripadvisor16.p.rapidapi.com")
                 .retrieve()
                 .bodyToMono(String.class);
