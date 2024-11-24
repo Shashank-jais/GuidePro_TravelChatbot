@@ -27,7 +27,7 @@ public class WeatherLoc {
         Mono<String> response = this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/v1/current.json")
-                        .queryParam("key", "2dbafb054c00442695f134909240610")
+                        .queryParam("key", "2cc38b11bef54be28ed171211242110")
                         .queryParam("q", city)
                         .queryParam("aqi", "yes")
                         .build())

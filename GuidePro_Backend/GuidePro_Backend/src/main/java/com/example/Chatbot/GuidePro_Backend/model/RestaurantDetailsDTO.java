@@ -1,3 +1,6 @@
+//not used
+
+
 package com.example.Chatbot.GuidePro_Backend.model;
 
 import lombok.Data;
@@ -96,3 +99,4 @@ public class RestaurantDetailsDTO {
 //key:"10346"
 //name:"Indian" } ]
 //currentHoursText
+

@@ -4,6 +4,7 @@ import { IoSendOutline } from "react-icons/io5";
 import RestaurantList from '../components/RestaurantList'; // Ensure RestaurantList accepts props
 import HotelList from '../components/HotelList';
 import Weather from '../components/Weather';
+import TouristPlaces from '../components/TouristPlaces';
 
 const Chat = () => {
     const [Darkmode, setDark] = useState(true);
@@ -11,6 +12,7 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [restaurants, setRestaurants] = useState([]); // State to hold restaurant data
     const [hotels, setHotels] = useState([]);
+    const [touristplaces,setTouristplaces] = useState([]);
 
     useEffect(() => {
         const dummyMessages = [
@@ -162,6 +164,27 @@ const Chat = () => {
 
                         break;
 
+
+                    case "TouristPlaces":
+                        // Update the restaurants only if intent is "Restauranlist"
+                        if (Array.isArray(data.places)) {
+                            newMessage.intent = data.intent;
+                            newMessage.content = `${data.places.length} Places To Visit In ${data.places[0].city}`;
+                            setMessages(prevMessages => [...prevMessages, newMessage]); // Update messages state
+                            setTouristplaces(data.places); // Update restaurant data
+
+
+                            // console.log("NewMessage:", newMessage);
+                            // console.log("Restaurants:", restaurants);
+                            // console.log("message:", messages);
+
+
+
+                        } else {
+                            newMessage.content = "No Tourist Places found.";
+                            setMessages(prevMessages => [...prevMessages, newMessage]);
+                        }
+                        break;
                     case "normal":
                         newMessage.intent = data.intent;
                         newMessage.content = data.message;
@@ -194,6 +217,9 @@ const Chat = () => {
             case 'Weather':
                 // console.log("Weather from main:  " , message);
                 return <Weather weatherData={message.content} Darkmode={Darkmode} />;
+            case 'TouristPlaces':
+                    // console.log("Weather from main:  " , message);
+                return <TouristPlaces places={touristplaces} Darkmode={Darkmode} />;
             default:
                 return message.content;
         }

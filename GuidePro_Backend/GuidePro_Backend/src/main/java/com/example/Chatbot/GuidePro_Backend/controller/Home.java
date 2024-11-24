@@ -1,10 +1,7 @@
 package com.example.Chatbot.GuidePro_Backend.controller;
 
 import com.example.Chatbot.GuidePro_Backend.model.*;
-import com.example.Chatbot.GuidePro_Backend.service.HotelsLoc;
-import com.example.Chatbot.GuidePro_Backend.service.LocationIDLoc;
-import com.example.Chatbot.GuidePro_Backend.service.RestaurantsLoc;
-import com.example.Chatbot.GuidePro_Backend.service.WeatherLoc;
+import com.example.Chatbot.GuidePro_Backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +22,9 @@ public class Home {
     private HotelsLoc hotelsLoc;
 
     @Autowired
+    private TouristPlacesLoc touristPlacesLoc;
+
+    @Autowired
     private HomeDTO greet;
 
     @Autowired
@@ -35,20 +35,45 @@ public class Home {
 
     @RequestMapping("/")
     public String hello() {
-        return "Namaste Sir";
+        return "Good Morning Sir";
     }
 
 
     @GetMapping("/response")
     public ResponseEntity<?> NLP(@RequestParam String message) {
 
+        //NLP model will be implemented here which will be telling the important information like intent of query of user
 
-        String intent = "Weather";
+        String intent = "TouristPlaces";
         switch (intent) {
             case "Home":
                 greet.setMessage("Good Morning");
                 greet.setIntent("normal");
                 return ResponseEntity.ok(greet);
+
+            case "TouristPlaces":
+                String place = message;
+                try {
+                    TouristPlaces places = touristPlacesLoc.findByText(place);
+                    List<TouristPlaceDTO> placeDTO = places.getPlaces();
+
+                    if (placeDTO.isEmpty()) {
+                        return ResponseEntity.noContent().build(); // 204 No Content if no restaurants found
+                    }
+
+                    // Set the intent in the restaurantData object
+                    places.setIntent(intent);
+
+                    // Return the entire Restaurant object (with both the list of restaurants and the intent)
+                    return ResponseEntity.ok(places); // 200 OK with the restaurant data and intent
+                } catch (NullPointerException e) {
+                    // Handle NullPointerException
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Null Pointer Exception occurred");
+                } catch (Exception e) {
+                    // Handle other exceptions and log the error
+                    System.err.println("An error occurred: " + e.getMessage());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while fetching Tourist Attraction");
+                }
 
             case "Restaurantlist":
                 // Hardcoded locationId for this example
@@ -134,6 +159,8 @@ public class Home {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while fetching weather data");
 //                    return ResponseEntity.ok(errorMessage);
                 }
+
+
 
 
             default:
