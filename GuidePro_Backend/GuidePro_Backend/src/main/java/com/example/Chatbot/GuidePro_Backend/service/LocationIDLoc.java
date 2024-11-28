@@ -28,7 +28,7 @@ public class LocationIDLoc {
                         .path("/api/v1/restaurant/searchLocation")
                         .queryParam("query", query)
                         .build())
-                .header("x-rapidapi-key", "eb7bf787e5msh48901167544884dp1042b2jsn171d24114325")
+                .header("x-rapidapi-key", "d341daaad1msh28d53b20cce3c19p1b9b3djsn949ce331ef6b")
                 .header("x-rapidapi-host", "tripadvisor16.p.rapidapi.com")
                 .retrieve()
                 .bodyToMono(String.class);

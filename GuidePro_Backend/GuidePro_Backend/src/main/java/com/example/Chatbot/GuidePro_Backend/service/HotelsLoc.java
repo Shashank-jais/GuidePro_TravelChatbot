@@ -26,17 +26,17 @@ public class HotelsLoc {
     public Hotel fetchHotelByGeoId(String geoId) {
         System.out.println("Fetching Hotels for GeoID: " + geoId);
 
-        // Fetch the raw API response
+        // Fetch the raw API respo  nse
         Mono<String> response = this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/v1/hotels/searchHotels")
                         .queryParam("geoId", geoId)
-                        .queryParam("checkIn", "2024-11-07")
-                        .queryParam("checkOut", "2024-11-10")
+                        .queryParam("checkIn", "2025-01-07")
+                        .queryParam("checkOut", "2025-01-10")
                         .queryParam("pageNumber", "1")
                         .queryParam("currencyCode", "INR")
                         .build())
-                .header("x-rapidapi-key", "eb7bf787e5msh48901167544884dp1042b2jsn171d24114325")
+                .header("x-rapidapi-key", "d341daaad1msh28d53b20cce3c19p1b9b3djsn949ce331ef6b")
                 .header("x-rapidapi-host", "tripadvisor16.p.rapidapi.com")
                 .retrieve()
                 .bodyToMono(String.class);

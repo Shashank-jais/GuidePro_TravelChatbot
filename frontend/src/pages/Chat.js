@@ -5,6 +5,7 @@ import RestaurantList from '../components/RestaurantList'; // Ensure RestaurantL
 import HotelList from '../components/HotelList';
 import Weather from '../components/Weather';
 import TouristPlaces from '../components/TouristPlaces';
+import PlacesDetails from '../components/PlacesDetails';
 
 const Chat = () => {
     const [Darkmode, setDark] = useState(true);
@@ -12,7 +13,7 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [restaurants, setRestaurants] = useState([]); // State to hold restaurant data
     const [hotels, setHotels] = useState([]);
-    const [touristplaces,setTouristplaces] = useState([]);
+    const [touristplaces, setTouristplaces] = useState([]);
 
     useEffect(() => {
         const dummyMessages = [
@@ -24,7 +25,7 @@ const Chat = () => {
                 intent: "normal",
                 sender: 'You',
                 content: 'Hi, I’m looking for travel recommendations!',
-                timestamp: '10:30 AM',
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
             },
             {
@@ -32,7 +33,7 @@ const Chat = () => {
                 intent: "normal",
                 sender: 'John Doe',
                 content: 'Hello! Where are you planning to travel to?',
-                timestamp: '10:31 AM',
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
             },
         ];
@@ -132,8 +133,7 @@ const Chat = () => {
                             newMessage.content = `Found ${data.hotels.length} hotels.`;
                             setMessages(prevMessages => [...prevMessages, newMessage]); // Update messages state
                             setHotels(data.hotels); // Update hotels data
-
-
+                            console.log(hotels);
 
                             // console.log("NewMessage:", newMessage);
                             // console.log("Restaurants:", restaurants);
@@ -148,7 +148,7 @@ const Chat = () => {
                         break;
                     case "Weather":
                         // Update the hotel only if intent is "hotellist"
-                        console.log("NewMessage:", data);
+                        // console.log("NewMessage:", data);
                         newMessage.intent = data.intent;
                         newMessage.content = data.weather;
                         setMessages(prevMessages => [...prevMessages, newMessage]); // Update messages state
@@ -185,6 +185,24 @@ const Chat = () => {
                             setMessages(prevMessages => [...prevMessages, newMessage]);
                         }
                         break;
+
+                    case "PlaceDetail":
+                        // Update the hotel only if intent is "hotellist"
+                        // console.log("NewMessage:", data);
+                        newMessage.intent = data.intent;
+                        newMessage.content = data.details;
+                        setMessages(prevMessages => [...prevMessages, newMessage]); // Update messages state
+
+
+
+                        // console.log("NewMessage:", newMessage.content);
+                        // console.log("Restaurants:", restaurants);
+                        // console.log("message:", messages);
+
+
+
+
+                        break;
                     case "normal":
                         newMessage.intent = data.intent;
                         newMessage.content = data.message;
@@ -218,8 +236,11 @@ const Chat = () => {
                 // console.log("Weather from main:  " , message);
                 return <Weather weatherData={message.content} Darkmode={Darkmode} />;
             case 'TouristPlaces':
-                    // console.log("Weather from main:  " , message);
+                // console.log("Weather from main:  " , message);
                 return <TouristPlaces places={touristplaces} Darkmode={Darkmode} />;
+
+            case 'PlaceDetail':
+                return <PlacesDetails details={message.content} Darkmode={Darkmode} />;
             default:
                 return message.content;
         }

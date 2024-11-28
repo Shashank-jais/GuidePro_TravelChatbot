@@ -1,5 +1,7 @@
 package com.example.Chatbot.GuidePro_Backend.controller;
 
+import com.example.Chatbot.GuidePro_Backend.NLP.Main;
+import com.example.Chatbot.GuidePro_Backend.NLP.NLPResult;
 import com.example.Chatbot.GuidePro_Backend.model.*;
 import com.example.Chatbot.GuidePro_Backend.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class Home {
     private TouristPlacesLoc touristPlacesLoc;
 
     @Autowired
+    private PlacesDetailLoc placesDetailLoc;
+
+    @Autowired
     private HomeDTO greet;
 
     @Autowired
@@ -32,6 +37,10 @@ public class Home {
 
     @Autowired
     private LocationIDLoc locationIDLoc;
+
+    @Autowired
+    private PlaceID_PlaceDetails placeIDPlaceDetails;
+
 
     @RequestMapping("/")
     public String hello() {
@@ -44,15 +53,37 @@ public class Home {
 
         //NLP model will be implemented here which will be telling the important information like intent of query of user
 
-        String intent = "TouristPlaces";
+        Main main = new Main();
+        NLPResult obj = main.processNLP(message);
+        String intent = obj.getClassifiedIntent();
+        String Location = obj.getLocations().getFirst();
+        System.out.println("--------------------------------------------------------");
+        System.out.println("Intent: " + intent + " , Location : " + Location);
+        System.out.println("--------------------------------------------------------");
         switch (intent) {
             case "Home":
                 greet.setMessage("Good Morning");
                 greet.setIntent("normal");
-                return ResponseEntity.ok(greet);
+                return ResponseEntity.ok(obj);
+
+            case "PlaceDetail":
+                String place_id = placeIDPlaceDetails.fetchPlaceId(Location);
+                try {
+                    PlacesDetails details = placesDetailLoc.fetchPlaceDetails(place_id);
+                    details.setIntent(intent);
+                    return ResponseEntity.ok(details);
+
+                } catch (NullPointerException e) {
+                    // Handle NullPointerException
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Null Pointer Exception occurred");
+                } catch (Exception e) {
+                    // Handle other exceptions and log the error
+                    System.err.println("An error occurred: " + e.getMessage());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while fetching Place Details");
+                }
 
             case "TouristPlaces":
-                String place = message;
+                String place = Location;
                 try {
                     TouristPlaces places = touristPlacesLoc.findByText(place);
                     List<TouristPlaceDTO> placeDTO = places.getPlaces();
@@ -77,7 +108,7 @@ public class Home {
 
             case "Restaurantlist":
                 // Hardcoded locationId for this example
-                String locationId = locationIDLoc.fetchLocationIDByQuery(message);
+                String locationId = locationIDLoc.fetchLocationIDByQuery(Location);
 
                 try {
                     Restaurant restaurantData = restaurantsLoc.fetchRestaurantsByLocationId(locationId);
@@ -104,7 +135,7 @@ public class Home {
 
             case "Hotellist":
                 // Using the message parameter as geoId
-                String geoId = locationIDLoc.fetchLocationIDByQuery(message);  // Use the user's message as the geoId dynamically
+                String geoId = locationIDLoc.fetchLocationIDByQuery(Location);  // Use the user's message as the geoId dynamically
 
                 try {
                     Hotel hotelData = hotelsLoc.fetchHotelByGeoId(geoId);
@@ -131,7 +162,7 @@ public class Home {
 
             case "Weather":
                 // Hardcoded location name (city) for this example. Replace "message" with the input query/location
-                String city = message;
+                String city = Location;
 
                 try {
                     // Fetch weather data using the WeatherLoc service
@@ -161,11 +192,12 @@ public class Home {
                 }
 
 
-
-
             default:
                 // Handle unknown intent
-                return ResponseEntity.badRequest().body("Unknown intent"); // 400 Bad Request for unrecognized intent
+                greet.setMessage("Not able to understand the question");
+                greet.setIntent("normal");
+                return ResponseEntity.ok(greet);
+//                return ResponseEntity.badRequest().body("Unknown intent"); // 400 Bad Request for unrecognized intent
         }
 
     }
