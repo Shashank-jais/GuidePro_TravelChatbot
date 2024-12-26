@@ -31,7 +31,7 @@ Interactive UI developed with React or AngularJS for seamless user interaction.
 
 ### 2. Backend
 Built using Java (Spring Boot) and Node.js to handle processing logic and external API communication.  
-**https://github.com/Shashank-jais/GuidePro_TravelChatbot/blob/main/WhatsApp%20Image%202024-11-28%20at%2017.30.07_92d38bda.jpg**
+![backend Photo]https://github.com/Shashank-jais/GuidePro_TravelChatbot/blob/main/WhatsApp%20Image%202024-11-28%20at%2017.30.07_92d38bda.jpg
 
 ### 3. Chatbot Interface
 A responsive and intuitive chatbot interface supporting multilingual input and emojis.  
