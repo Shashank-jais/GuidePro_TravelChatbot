@@ -27,15 +27,15 @@ The system is divided into three main components:
 
 ### 1. Frontend
 Interactive UI developed with React or AngularJS for seamless user interaction.  
-**WhatsApp Image 2024-12-15 at 17.32.52_3fe8595b.jpg**
+![Frontend](https://github.com/Shashank-jais/GuidePro_TravelChatbot/blob/main/WhatsApp%20Image%202024-12-15%20at%2017.32.52_3fe8595b.jpg)
 
 ### 2. Backend
 Built using Java (Spring Boot) and Node.js to handle processing logic and external API communication.  
-![backend Photo]https://github.com/Shashank-jais/GuidePro_TravelChatbot/blob/main/WhatsApp%20Image%202024-11-28%20at%2017.30.07_92d38bda.jpg
+![backend Photo](https://github.com/Shashank-jais/GuidePro_TravelChatbot/blob/main/WhatsApp%20Image%202024-11-28%20at%2017.30.07_92d38bda.jpg)
 
 ### 3. Chatbot Interface
 A responsive and intuitive chatbot interface supporting multilingual input and emojis.  
-**WhatsApp Image 2024-11-28 at 17.33.53_da0cb462.jpg**
+![Chat](https://github.com/Shashank-jais/GuidePro_TravelChatbot/blob/main/WhatsApp%20Image%202024-11-28%20at%2017.33.53_da0cb462.jpg)
 
 ---
 
